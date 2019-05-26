@@ -2,6 +2,9 @@
 # Flutter HeatMap Calendar
 A HeatMap Calendar based on Github's contributions chart
 
+![HeatMap Calendar in action](https://thumbs.gfycat.com/ImmaculateRequiredLarva.webp)
+
+
 ## Installing
 
 ### 1. Depend on it
