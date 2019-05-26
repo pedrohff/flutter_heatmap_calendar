@@ -54,7 +54,8 @@ class HeatMapCalendar extends StatefulWidget {
 }
 
 class HeatMapCalendarState extends State<HeatMapCalendar> {
-  static const double COLUMN_AMOUNT = 11;
+  static const double COLUMN_COUNT = 11;
+  static const double ROW_COUNT = 8;
   static const double DAYS_IN_A_WEEK = 7;
   static const double EDGE_SIZE = 4;
   double currentOpacity = 0;
@@ -128,11 +129,15 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
   }
 
   /// Groups the week labels with it items
-  List<Widget> buildAllColumns() {
+  List<Widget> buildAllColumns(int columnsCount) {
+    // The first column should always be the week labels,
+    // so we should not consider it
+    int calendarColumns = columnsCount - 1;
+
     DateTime today = DateTime.now();
     DateTime firstDayOfTheWeek = TimeUtils.firstDayOfTheWeek();
     DateTime firstDayOfCalendar =
-        firstDayOfTheWeek.subtract(Duration(days: (7 * COLUMN_AMOUNT.floor())));
+        firstDayOfTheWeek.subtract(Duration(days: (7 * calendarColumns)));
     var datesList = TimeUtils.datesBetween(firstDayOfCalendar, today);
 
     List<Widget> columns = new List();
@@ -147,14 +152,29 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onDoubleTap: onDoubleTap,
-      child: Container(
-        height: (widget.squareSize + EDGE_SIZE) * (COLUMN_AMOUNT + 1),
-        child: Row(
-          children: buildAllColumns(),
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // The greater value that the widget can fit
+        final double maxWidth = constraints.maxWidth;
+
+        // The given size of a square + the size of the margin
+        final double widgetWith = widget.squareSize + EDGE_SIZE;
+
+        // This value is used to calculate the number of columns that
+        // the widget should have
+        final int maxAmountOfColumns = maxWidth ~/ widgetWith;
+
+        return InkWell(
+          onDoubleTap: onDoubleTap,
+          child: Container(
+            height: (widget.squareSize + EDGE_SIZE) * (ROW_COUNT + 1),
+            width: maxWidth,
+            child: Row(
+              children: buildAllColumns(maxAmountOfColumns),
+            ),
+          ),
+        );
+      },
     );
   }
 }

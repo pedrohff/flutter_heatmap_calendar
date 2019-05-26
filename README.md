@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/pedrohff/flutter_heatmap_calendar.svg?branch=master)](https://travis-ci.org/pedrohff/flutter_heatmap_calendar)
-# Flutter HeatMap Calendar
-A HeatMap Calendar based on Github's contributions chart
+# Flutter Heat Map Calendar
+A Heat Map Calendar based on Github's contributions chart which can be used to visualize values over time
 
 ![HeatMap Calendar in action](https://thumbs.gfycat.com/ImmaculateRequiredLarva.webp)
 
@@ -12,7 +12,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
-  heatmap_calendar: ^1.0.2
+  heatmap_calendar: ^1.1.0
 ```
 
 ### 2. Install it
@@ -29,6 +29,7 @@ with Flutter:
 ```shell
 $ flutter pub get
 ```
+
 ## Example
 ```dart
 import 'package:heatmap_calendar/heatmap_calendar.dart';
