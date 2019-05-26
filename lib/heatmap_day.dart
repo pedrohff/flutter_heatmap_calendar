@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class HeatMapDay extends StatelessWidget {
-
   final int value;
   final double size;
   final Map<int, Color> thresholds;
@@ -13,8 +12,7 @@ class HeatMapDay extends StatelessWidget {
   final FontWeight fontWeight;
 
   const HeatMapDay(
-    {
-      Key key,
+      {Key key,
       this.value,
       this.size,
       this.thresholds,
@@ -23,8 +21,8 @@ class HeatMapDay extends StatelessWidget {
       this.opacity: 0.3,
       this.animationDuration: const Duration(milliseconds: 300),
       this.textColor: Colors.black,
-      this.fontWeight
-    }) : super(key: key);
+      this.fontWeight})
+      : super(key: key);
 
   /// Loop for getting the right color based on [thresholds] values
   ///
@@ -43,7 +41,6 @@ class HeatMapDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       alignment: Alignment.center,
       height: size,
@@ -55,10 +52,7 @@ class HeatMapDay extends StatelessWidget {
         duration: animationDuration,
         child: Text(
           currentDay.toString(),
-          style: TextStyle(
-            fontWeight: fontWeight,
-            color: textColor
-          ),
+          style: TextStyle(fontWeight: fontWeight, color: textColor),
         ),
       ),
     );

@@ -17,16 +17,13 @@ class DefaultContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
-      height: size,
-      width: size,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor
+        alignment: Alignment.center,
+        height: size,
+        width: size,
+        child: Text(
+          text,
+          style: TextStyle(color: textColor),
         ),
-      ),
-      margin: EdgeInsets.all(margin)
-    );
+        margin: EdgeInsets.all(margin));
   }
 }

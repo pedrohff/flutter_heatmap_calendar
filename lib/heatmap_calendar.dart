@@ -5,7 +5,6 @@ import 'package:heatmap_calendar/time_utils.dart';
 import 'package:heatmap_calendar/week_labels.dart';
 
 class HeatMapCalendar extends StatefulWidget {
-
   /// The labels identifying the initials of the days of the week
   /// Defaults to [TimeUtils.defaultWeekLabels]
   final List<String> weekDaysLabels;
@@ -36,27 +35,25 @@ class HeatMapCalendar extends StatefulWidget {
   /// The color of the text that identifies the days
   final Color dayTextColor;
 
-  const HeatMapCalendar({
-    Key key,
-    @required this.input,
-    @required this.colorThresholds,
-    this.weekDaysLabels: TimeUtils.defaultWeekLabels,
-    this.monthsLabels: TimeUtils.defaultMonthsLabels,
-    this.squareSize: 16,
-    this.textOpacity: 0.2,
-    this.labelTextColor: Colors.black,
-    this.dayTextColor: Colors.black
-  }) : super(key: key);
+  const HeatMapCalendar(
+      {Key key,
+      @required this.input,
+      @required this.colorThresholds,
+      this.weekDaysLabels: TimeUtils.defaultWeekLabels,
+      this.monthsLabels: TimeUtils.defaultMonthsLabels,
+      this.squareSize: 16,
+      this.textOpacity: 0.2,
+      this.labelTextColor: Colors.black,
+      this.dayTextColor: Colors.black})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
     return HeatMapCalendarState();
   }
-
 }
 
 class HeatMapCalendarState extends State<HeatMapCalendar> {
-
   static const double COLUMN_AMOUNT = 11;
   static const double DAYS_IN_A_WEEK = 7;
   static const double EDGE_SIZE = 4;
@@ -85,29 +82,26 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
     List<int> months = new List();
 
     for (int i = 0; i <= amount; i++) {
-
       // If true, it means that it should be a label,
       // if false, it should be a HeatMapDay
       if (i % 8 == 0) {
-
         String month = "";
         if (!months.contains(dateList.first.month)) {
           month = TimeUtils.defaultMonthsLabels[dateList.first.month];
           months.add(dateList.first.month);
         }
 
-        columnItems.add(
-          MonthLabel(
-            size: widget.squareSize,
-            textColor: widget.labelTextColor,
-            text: month,
-          )
-        );
+        columnItems.add(MonthLabel(
+          size: widget.squareSize,
+          textColor: widget.labelTextColor,
+          text: month,
+        ));
       } else {
         DateTime currentDate = dateList.first;
         dateList.removeAt(0);
 
-        final int value = (widget.input[currentDate] == null) ? 0 : widget.input[currentDate];
+        final int value =
+            (widget.input[currentDate] == null) ? 0 : widget.input[currentDate];
 
         HeatMapDay heatMapDay = HeatMapDay(
           value: value,
@@ -123,11 +117,11 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
       // If the columnsItems has a length of 8, it means it should be ended.
       // The same rule applies if there's no more items in the dateList,
       // meaning a week hasn't finished yet
-      if (columnItems.isNotEmpty && (columnItems.length == 8 || dateList.isEmpty)) {
+      if (columnItems.isNotEmpty &&
+          (columnItems.length == 8 || dateList.isEmpty)) {
         columns.add(Column(children: columnItems));
         columnItems = new List();
       }
-
     }
 
     return columns;
@@ -137,25 +131,22 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
   List<Widget> buildAllColumns() {
     DateTime today = DateTime.now();
     DateTime firstDayOfTheWeek = TimeUtils.firstDayOfTheWeek();
-    DateTime firstDayOfCalendar = firstDayOfTheWeek.subtract(Duration(days: (7 * COLUMN_AMOUNT.floor())));
+    DateTime firstDayOfCalendar =
+        firstDayOfTheWeek.subtract(Duration(days: (7 * COLUMN_AMOUNT.floor())));
     var datesList = TimeUtils.datesBetween(firstDayOfCalendar, today);
 
     List<Widget> columns = new List();
-    columns.add(
-      WeekLabels(
-        weekDaysLabels:
-        widget.weekDaysLabels,
-        squareSize: widget.squareSize,
-        labelTextColor: widget.labelTextColor,
-      )
-    );
+    columns.add(WeekLabels(
+      weekDaysLabels: widget.weekDaysLabels,
+      squareSize: widget.squareSize,
+      labelTextColor: widget.labelTextColor,
+    ));
     columns.addAll(buildWeekItems(datesList.length, datesList));
     return columns;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onDoubleTap: onDoubleTap,
       child: Container(
@@ -167,4 +158,3 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
     );
   }
 }
-
