@@ -1,3 +1,7 @@
+## [1.1.2] - 2019-05-27
+
+* Fixing margin on week labels
+
 ## [1.1.1] - 2019-05-27
 
 * Fixing the amount of columns that are being created

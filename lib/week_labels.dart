@@ -18,6 +18,7 @@ class WeekLabels extends StatelessWidget {
           text: "",
           size: squareSize,
           textColor: labelTextColor,
+          margin: 0,
         ),
         DefaultContainer(
           text: weekDaysLabels[0],
