@@ -131,13 +131,14 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
   /// Groups the week labels with it items
   List<Widget> buildAllColumns(int columnsCount) {
     // The first column should always be the week labels,
-    // so we should not consider it
-    int calendarColumns = columnsCount - 1;
+    // so we should not consider it.
+    // Also, the current week should not be considered
+    // when counting.
+    int columnsToCreate = columnsCount - 2;
 
     DateTime today = DateTime.now();
     DateTime firstDayOfTheWeek = TimeUtils.firstDayOfTheWeek();
-    DateTime firstDayOfCalendar =
-        firstDayOfTheWeek.subtract(Duration(days: (7 * calendarColumns)));
+    DateTime firstDayOfCalendar = firstDayOfTheWeek.subtract(Duration(days: (DAYS_IN_A_WEEK.floor() * columnsToCreate)));
     var datesList = TimeUtils.datesBetween(firstDayOfCalendar, today);
 
     List<Widget> columns = new List();
