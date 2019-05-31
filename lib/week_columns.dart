@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:heatmap_calendar/heatmap_calendar.dart';
 import 'package:heatmap_calendar/heatmap_day.dart';
 import 'package:heatmap_calendar/month_label.dart';
 import 'package:heatmap_calendar/time_utils.dart';

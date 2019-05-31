@@ -1,3 +1,7 @@
+## [1.2.1] - 2019-05-31
+
+* Fixing unused import
+
 ## [1.2.0] - 2019-05-31
 
 * Creating tests for all classes
