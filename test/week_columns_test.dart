@@ -62,7 +62,7 @@ void main() {
     testWidgets('should have the given columns', (tester) async {
       await tester.pumpWidget(app);
 
-      expect(find.byType(Column), findsNWidgets(columnAmount+1));
+      expect(find.byType(Column), findsNWidgets(columnAmount));
     });
 
     testWidgets(
@@ -70,7 +70,7 @@ void main() {
         (tester) async {
       await tester.pumpWidget(app);
 
-      expect(find.byType(MonthLabel), findsNWidgets(columnAmount+1));
+      expect(find.byType(MonthLabel), findsNWidgets(columnAmount));
     });
 
     testWidgets(
@@ -79,7 +79,7 @@ void main() {
       await tester.pumpWidget(app);
 
       expect(find.byType(HeatMapDay),
-          findsNWidgets((7 * (columnAmount+1)) - daysUntilWeekEnds));
+          findsNWidgets((7 * (columnAmount)) - daysUntilWeekEnds));
     });
   });
 
@@ -92,7 +92,7 @@ void main() {
         expect(calendarDates.length, greaterThan(0));
 
         int daysAmount = calendarDates.length + daysUntilWeekEnds;
-        expect(columnAmount+1, equals((daysAmount ~/ 7)));
+        expect(columnAmount, equals((daysAmount ~/ 7)));
       });
     });
 
@@ -106,7 +106,7 @@ void main() {
       });
 
       test('list length should be equal to given columns amount', () {
-        expect(subject.buildWeekItems().length, equals(columnAmount+1));
+        expect(subject.buildWeekItems().length, equals(columnAmount));
       });
     });
   });

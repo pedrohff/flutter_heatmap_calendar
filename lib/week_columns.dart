@@ -97,7 +97,7 @@ class WeekColumns extends StatelessWidget {
     DateTime today = DateTime.now();
     DateTime firstDayOfTheWeek = TimeUtils.firstDayOfTheWeek();
     DateTime firstDayOfCalendar = firstDayOfTheWeek
-        .subtract(Duration(days: (DateTime.daysPerWeek * (columnsAmount))));
+        .subtract(Duration(days: (DateTime.daysPerWeek * (columnsAmount - 1))));
     return TimeUtils.datesBetween(firstDayOfCalendar, today);
   }
 

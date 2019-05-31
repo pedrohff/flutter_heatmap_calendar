@@ -90,7 +90,7 @@ void main() {
         HeatMapCalendarState state = element.state;
 
         expect(
-            state.getColumnsToCreate(220 + subject.safetyMargin), equals(10));
+            state.getColumnsToCreate(200 + subject.safetyMargin), equals(10));
       });
 
       testWidgets('should throw assertion error if doesn\'t have enough space',

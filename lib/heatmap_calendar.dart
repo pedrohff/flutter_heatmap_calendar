@@ -80,9 +80,8 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
     assert(maxWidth > (2 * (HeatMapCalendar.EDGE_SIZE + widget.squareSize)));
 
     // The given size of a square + the size of the margin
-    final double widgetWith = widget.squareSize + HeatMapCalendar.EDGE_SIZE;
-
-    return (maxWidth - widgetWith - widget.safetyMargin) ~/ widgetWith;
+    final double widgetWidth = widget.squareSize + HeatMapCalendar.EDGE_SIZE;
+    return (maxWidth - widget.safetyMargin) ~/ widgetWidth;
   }
 
   @override
