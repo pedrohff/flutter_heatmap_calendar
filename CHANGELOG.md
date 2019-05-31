@@ -1,3 +1,7 @@
+## [1.2.2] - 2019-05-31
+
+* Fixing width problems
+
 ## [1.2.1] - 2019-05-31
 
 * Fixing unused import

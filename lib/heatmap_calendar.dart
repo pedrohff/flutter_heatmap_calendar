@@ -52,7 +52,7 @@ class HeatMapCalendar extends StatefulWidget {
       this.textOpacity: 0.2,
       this.labelTextColor: Colors.black,
       this.dayTextColor: Colors.black,
-      this.safetyMargin: 14})
+      this.safetyMargin: 0})
       : super(key: key);
 
   @override

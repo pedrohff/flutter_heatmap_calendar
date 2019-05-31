@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               "Nov",
               "Dec",
             ],
-            squareSize: 16.0,
+            squareSize: 20.0,
             textOpacity: 0.3,
             labelTextColor: Colors.blueGrey,
             dayTextColor: Colors.blue[500],
