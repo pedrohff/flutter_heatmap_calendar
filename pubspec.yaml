@@ -1,6 +1,6 @@
 name: heatmap_calendar
 description: A Heat Map Calendar based on Github's contributions chart which can be used to visualize values over time
-version: 1.2.2
+version: 1.2.3
 author: Pedro Feitosa <pedrohenriqueff@gmail.com>
 homepage: https://github.com/pedrohff/flutter_heatmap_calendar
 

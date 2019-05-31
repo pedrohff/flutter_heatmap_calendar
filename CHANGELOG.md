@@ -1,3 +1,7 @@
+## [1.2.3] - 2019-05-31
+
+* Fixing tests
+
 ## [1.2.2] - 2019-05-31
 
 * Fixing width problems
