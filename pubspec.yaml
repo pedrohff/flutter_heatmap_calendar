@@ -1,6 +1,6 @@
 name: heatmap_calendar
 description: A Heat Map Calendar based on Github's contributions chart which can be used to visualize values over time
-version: 1.1.2
+version: 1.2.0
 author: Pedro Feitosa <pedrohenriqueff@gmail.com>
 homepage: https://github.com/pedrohff/flutter_heatmap_calendar
 
@@ -14,6 +14,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

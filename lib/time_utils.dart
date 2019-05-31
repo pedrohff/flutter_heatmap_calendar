@@ -52,6 +52,8 @@ class TimeUtils {
 
   /// Creates a list of [DateTime], including all days between [startDate] and [finishDate]
   static List<DateTime> datesBetween(DateTime startDate, DateTime finishDate) {
+    assert(startDate.isBefore(finishDate));
+
     List<DateTime> datesList = new List();
     DateTime aux = startDate;
     do {

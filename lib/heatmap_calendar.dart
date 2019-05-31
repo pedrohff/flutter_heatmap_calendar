@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_day.dart';
-import 'package:heatmap_calendar/month_label.dart';
 import 'package:heatmap_calendar/time_utils.dart';
+import 'package:heatmap_calendar/week_columns.dart';
 import 'package:heatmap_calendar/week_labels.dart';
 
 class HeatMapCalendar extends StatefulWidget {
+  static const double COLUMN_COUNT = 11;
+  static const double ROW_COUNT = 8;
+  static const double EDGE_SIZE = 4;
+
   /// The labels identifying the initials of the days of the week
   /// Defaults to [TimeUtils.defaultWeekLabels]
   final List<String> weekDaysLabels;
@@ -35,6 +39,9 @@ class HeatMapCalendar extends StatefulWidget {
   /// The color of the text that identifies the days
   final Color dayTextColor;
 
+  /// Helps avoiding overspacing issues
+  final double safetyMargin;
+
   const HeatMapCalendar(
       {Key key,
       @required this.input,
@@ -44,20 +51,17 @@ class HeatMapCalendar extends StatefulWidget {
       this.squareSize: 16,
       this.textOpacity: 0.2,
       this.labelTextColor: Colors.black,
-      this.dayTextColor: Colors.black})
+      this.dayTextColor: Colors.black,
+      this.safetyMargin: 14})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
+  HeatMapCalendarState createState() {
     return HeatMapCalendarState();
   }
 }
 
 class HeatMapCalendarState extends State<HeatMapCalendar> {
-  static const double COLUMN_COUNT = 11;
-  static const double ROW_COUNT = 8;
-  static const double DAYS_IN_A_WEEK = 7;
-  static const double EDGE_SIZE = 4;
   double currentOpacity = 0;
   bool displayDates = false;
 
@@ -69,109 +73,46 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
     });
   }
 
-  /// The main logic for generating a list of columns representing a week
-  /// Each column is a week having a [MonthLabel] and 7 [HeatMapDay]
-  List<Widget> buildWeekItems(int totalDays, List<DateTime> dateList) {
-    int totalWeeks = totalDays ~/ DAYS_IN_A_WEEK;
-    int amount = totalDays + totalWeeks;
+  /// Calculates the right amount of columns to create based on [maxWidth]
+  ///
+  /// returns the number of columns that the widget should have
+  int getColumnsToCreate(double maxWidth) {
+    assert(maxWidth > (2 * (HeatMapCalendar.EDGE_SIZE + widget.squareSize)));
 
-    // The list of columns that will be returned
-    List<Widget> columns = new List();
+    // The given size of a square + the size of the margin
+    final double widgetWith = widget.squareSize + HeatMapCalendar.EDGE_SIZE;
 
-    // The list of items that will be used to form a week
-    List<Widget> columnItems = new List();
-    List<int> months = new List();
-
-    for (int i = 0; i <= amount; i++) {
-      // If true, it means that it should be a label,
-      // if false, it should be a HeatMapDay
-      if (i % 8 == 0) {
-        String month = "";
-        if (!months.contains(dateList.first.month)) {
-          month = TimeUtils.defaultMonthsLabels[dateList.first.month];
-          months.add(dateList.first.month);
-        }
-
-        columnItems.add(MonthLabel(
-          size: widget.squareSize,
-          textColor: widget.labelTextColor,
-          text: month,
-        ));
-      } else {
-        DateTime currentDate = dateList.first;
-        dateList.removeAt(0);
-
-        final int value =
-            (widget.input[currentDate] == null) ? 0 : widget.input[currentDate];
-
-        HeatMapDay heatMapDay = HeatMapDay(
-          value: value,
-          thresholds: widget.colorThresholds,
-          size: widget.squareSize,
-          currentDay: currentDate.day,
-          opacity: currentOpacity,
-          textColor: widget.dayTextColor,
-        );
-        columnItems.add(heatMapDay);
-      }
-
-      // If the columnsItems has a length of 8, it means it should be ended.
-      // The same rule applies if there's no more items in the dateList,
-      // meaning a week hasn't finished yet
-      if (columnItems.isNotEmpty &&
-          (columnItems.length == 8 || dateList.isEmpty)) {
-        columns.add(Column(children: columnItems));
-        columnItems = new List();
-      }
-    }
-
-    return columns;
-  }
-
-  /// Groups the week labels with it items
-  List<Widget> buildAllColumns(int columnsCount) {
-    // The first column should always be the week labels,
-    // so we should not consider it.
-    // Also, the current week should not be considered
-    // when counting.
-    int columnsToCreate = columnsCount - 2;
-
-    DateTime today = DateTime.now();
-    DateTime firstDayOfTheWeek = TimeUtils.firstDayOfTheWeek();
-    DateTime firstDayOfCalendar = firstDayOfTheWeek.subtract(Duration(days: (DAYS_IN_A_WEEK.floor() * columnsToCreate)));
-    var datesList = TimeUtils.datesBetween(firstDayOfCalendar, today);
-
-    List<Widget> columns = new List();
-    columns.add(WeekLabels(
-      weekDaysLabels: widget.weekDaysLabels,
-      squareSize: widget.squareSize,
-      labelTextColor: widget.labelTextColor,
-    ));
-    columns.addAll(buildWeekItems(datesList.length, datesList));
-    return columns;
+    return (maxWidth - widgetWith - widget.safetyMargin) ~/ widgetWith;
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // The greater value that the widget can fit
-        final double maxWidth = constraints.maxWidth;
-
-        // The given size of a square + the size of the margin
-        final double widgetWith = widget.squareSize + EDGE_SIZE;
-
-        // This value is used to calculate the number of columns that
-        // the widget should have
-        final int maxAmountOfColumns = maxWidth ~/ widgetWith;
-
         return InkWell(
           onDoubleTap: onDoubleTap,
           child: Container(
-            height: (widget.squareSize + EDGE_SIZE) * (ROW_COUNT + 1),
-            width: maxWidth,
+            height: (widget.squareSize + HeatMapCalendar.EDGE_SIZE) *
+                (HeatMapCalendar.ROW_COUNT + 1),
+            width: constraints.maxWidth,
             child: Row(
-              children: buildAllColumns(maxAmountOfColumns),
+              children: <Widget>[
+                WeekLabels(
+                  weekDaysLabels: widget.weekDaysLabels,
+                  squareSize: widget.squareSize,
+                  labelTextColor: widget.labelTextColor,
+                ),
+                WeekColumns(
+                  squareSize: widget.squareSize,
+                  labelTextColor: widget.labelTextColor,
+                  input: widget.input,
+                  colorThresholds: widget.colorThresholds,
+                  currentOpacity: currentOpacity,
+                  monthLabels: widget.monthsLabels,
+                  dayTextColor: widget.dayTextColor,
+                  columnsToCreate: getColumnsToCreate(constraints.maxWidth) - 1,
+                )
+              ],
             ),
           ),
         );

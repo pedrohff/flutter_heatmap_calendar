@@ -1,3 +1,8 @@
+## [1.2.0] - 2019-05-31
+
+* Creating tests for all classes
+* Separated WeekColumns logic to a new Widget
+
 ## [1.1.2] - 2019-05-27
 
 * Fixing margin on week labels

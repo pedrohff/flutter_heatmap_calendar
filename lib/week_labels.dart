@@ -7,8 +7,16 @@ class WeekLabels extends StatelessWidget {
   final Color labelTextColor;
 
   const WeekLabels(
-      {Key key, this.weekDaysLabels, this.squareSize, this.labelTextColor})
-      : super(key: key);
+      {Key key,
+      @required this.weekDaysLabels,
+      @required this.squareSize,
+      @required this.labelTextColor})
+      : assert(weekDaysLabels != null),
+        assert(weekDaysLabels.length == 7),
+        assert(squareSize != null),
+        assert(squareSize > 0),
+        assert(labelTextColor != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
