@@ -1,3 +1,7 @@
+## [1.2.5] - 2019-07-06
+
+* Fixing issues when creating the calendar columns (validating if datesList is not empty)
+
 ## [1.2.4] - 2019-05-31
 
 * Fixing issues

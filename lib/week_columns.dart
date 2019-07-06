@@ -47,12 +47,13 @@ class WeekColumns extends StatelessWidget {
     List<Widget> columnItems = new List();
     List<int> months = new List();
 
-    for (int i = 0; i <= amount; i++) {
+    for (int i = 0; i < amount; i++) {
       // If true, it means that it should be a label,
       // if false, it should be a HeatMapDay
       if (i % 8 == 0) {
         String month = "";
-        if (!months.contains(dateList.first.month)) {
+
+        if (dateList.isNotEmpty && !months.contains(dateList.first.month)) {
           month = monthLabels[dateList.first.month];
           months.add(dateList.first.month);
         }
