@@ -110,6 +110,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                   monthLabels: widget.monthsLabels,
                   dayTextColor: widget.dayTextColor,
                   columnsToCreate: getColumnsToCreate(constraints.maxWidth) - 1,
+                  date: DateTime.now(),
                 )
               ],
             ),

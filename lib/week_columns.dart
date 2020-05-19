@@ -20,6 +20,8 @@ class WeekColumns extends StatelessWidget {
 
   final int columnsToCreate;
 
+  final DateTime date;
+
   const WeekColumns(
       {Key key,
       @required this.squareSize,
@@ -29,7 +31,8 @@ class WeekColumns extends StatelessWidget {
       @required this.currentOpacity,
       @required this.monthLabels,
       @required this.dayTextColor,
-      @required this.columnsToCreate})
+      @required this.columnsToCreate,
+      @required this.date})
       : super(key: key);
 
   /// The main logic for generating a list of columns representing a week
@@ -37,7 +40,8 @@ class WeekColumns extends StatelessWidget {
   List<Widget> buildWeekItems() {
     List<DateTime> dateList = getCalendarDates(columnsToCreate);
     int totalDays = dateList.length;
-    int totalWeeks = totalDays ~/ DateTime.daysPerWeek;
+    var daysPerWeek = DateTime.daysPerWeek;
+    int totalWeeks = (totalDays / daysPerWeek).ceil();
     int amount = totalDays + totalWeeks;
 
     // The list of columns that will be returned
@@ -78,28 +82,26 @@ class WeekColumns extends StatelessWidget {
           textColor: dayTextColor,
         );
         columnItems.add(heatMapDay);
-      }
 
-      // If the columnsItems has a length of 8, it means it should be ended.
-      // The same rule applies if there's no more items in the dateList,
-      // meaning a week hasn't finished yet
-      if (columnItems.isNotEmpty &&
-          (columnItems.length == 8 || dateList.isEmpty)) {
-        columns.add(Column(children: columnItems));
-        columnItems = new List();
+        // If the columnsItems has a length of 8, it means it should be ended.
+        if (columnItems.length == 8) {
+          columns.add(Column(children: columnItems));
+          columnItems = new List();
+        }
       }
     }
 
+    if (columnItems.isNotEmpty) {
+      columns.add(Column(children: columnItems));
+    }
     return columns;
   }
 
   /// Creates a list of all weeks based on given [columnsAmount]
   List<DateTime> getCalendarDates(int columnsAmount) {
-    DateTime today = DateTime.now();
-    DateTime firstDayOfTheWeek = TimeUtils.firstDayOfTheWeek();
-    DateTime firstDayOfCalendar = firstDayOfTheWeek
-        .subtract(Duration(days: (DateTime.daysPerWeek * (columnsAmount - 1))));
-    return TimeUtils.datesBetween(firstDayOfCalendar, today);
+    DateTime firstDayOfTheWeek = TimeUtils.firstDayOfTheWeek(date);
+    DateTime firstDayOfCalendar = TimeUtils.firstDayOfCalendar(firstDayOfTheWeek, columnsAmount);
+    return TimeUtils.datesBetween(firstDayOfCalendar, date);
   }
 
   @override
