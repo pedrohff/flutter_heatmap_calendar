@@ -29,10 +29,9 @@ class TimeUtils {
 
   /// Obtains the first day of the current week,
   /// based on user's current day
-  static DateTime firstDayOfTheWeek() {
-    DateTime today = DateTime.now();
+  static DateTime firstDayOfTheWeek(DateTime today) {
     return today.subtract(new Duration(
-        days: today.weekday,
+        days: (today.weekday % DateTime.daysPerWeek),
         hours: today.hour,
         minutes: today.minute,
         seconds: today.second,
@@ -40,14 +39,13 @@ class TimeUtils {
         milliseconds: today.millisecond));
   }
 
+  static DateTime firstDayOfCalendar(DateTime day, int columnsAmount) {
+    return day.subtract(Duration(days: (DateTime.daysPerWeek * (columnsAmount - 1))));
+  }
+
   /// Sets a DateTime hours/minutes/seconds/microseconds/milliseconds to 0
   static DateTime removeTime(DateTime dateTime) {
-    return dateTime.subtract(new Duration(
-        hours: dateTime.hour,
-        minutes: dateTime.minute,
-        seconds: dateTime.second,
-        microseconds: dateTime.microsecond,
-        milliseconds: dateTime.millisecond));
+    return DateTime(dateTime.year, dateTime.month, dateTime.day);
   }
 
   /// Creates a list of [DateTime], including all days between [startDate] and [finishDate]
@@ -59,7 +57,7 @@ class TimeUtils {
     do {
       datesList.add(aux);
       aux = aux.add(Duration(days: 1));
-    } while (finishDate.isAfter(aux));
+    } while (finishDate.millisecondsSinceEpoch >= aux.millisecondsSinceEpoch);
 
     return datesList;
   }

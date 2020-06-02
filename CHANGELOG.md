@@ -1,3 +1,8 @@
+## [1.2.6] - 2020-05-19
+
+* Support of unfinished week
+* Add more tests
+
 ## [1.2.5] - 2019-07-06
 
 * Fixing issues when creating the calendar columns (validating if datesList is not empty)

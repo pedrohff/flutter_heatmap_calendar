@@ -1,18 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:heatmap_calendar/time_utils.dart';
 
+final DateTime startWeek = DateTime(2020, 5, 31);
+final DateTime friday = DateTime(2020, 6, 5);
+
 void main() {
   group('Testing the firstDayOfTheWeek method', () {
     test('should return weekday as 7', () {
-      expect(TimeUtils.firstDayOfTheWeek().weekday, equals(7));
+      expect(TimeUtils.firstDayOfTheWeek(friday).weekday, equals(7));
     });
 
     test('should return the first day of the week', () {
       expect(
-          TimeUtils.firstDayOfTheWeek().day,
-          equals(DateTime.now()
-              .subtract(Duration(days: DateTime.now().weekday))
-              .day));
+          TimeUtils.firstDayOfTheWeek(friday),
+          equals(startWeek));
+    });
+
+    test('should return same day if its first day of the week', () {
+      expect(
+          TimeUtils.firstDayOfTheWeek(startWeek),
+          equals(startWeek));
     });
   });
 

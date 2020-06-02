@@ -7,106 +7,145 @@ import 'package:heatmap_calendar/week_columns.dart';
 
 void main() {
   final int columnAmount = 10;
-  final int daysUntilWeekEnds = (6 - (DateTime.now().weekday & 7));
 
-  WeekColumns subject = WeekColumns(
-    squareSize: 16,
-    labelTextColor: Colors.black,
-    input: {
-      TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 3))): 5,
-      TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))): 35,
-      TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))): 14,
-      TimeUtils.removeTime(DateTime.now()): 5,
-    },
-    colorThresholds: {
-      1: Colors.green[100],
-      10: Colors.green[300],
-      30: Colors.green[500]
-    },
-    currentOpacity: 0,
-    monthLabels: TimeUtils.defaultMonthsLabels,
-    dayTextColor: Colors.red,
-    columnsToCreate: columnAmount,
-  );
+  //Week started from Sunday last day of previous month.
+  //This order needed to test all week days and last and first day of the month
+  final List<DateTime> weekDays = [
+    DateTime(2020, 5, 31), //sunday
+    DateTime(2020, 6, 1),
+    DateTime(2020, 6, 2),
+    DateTime(2020, 6, 3),
+    DateTime(2020, 6, 4),
+    DateTime(2020, 6, 5),
+    DateTime(2020, 6, 6),
+    DateTime(2020, 6, 7),
+    DateTime(2020, 6, 8),
+    DateTime(2020, 6, 9),
+    DateTime(2020, 6, 10),
+    DateTime(2020, 6, 11),
+    DateTime(2020, 6, 12),
+    DateTime(2020, 6, 13),
+    DateTime(2020, 6, 14),
+  ];
 
-  Widget app = MaterialApp(
-    home: Scaffold(
-      body: Row(
-        children: <Widget>[subject],
+  WeekColumns getSubjectUnderTest(DateTime date) {
+    return WeekColumns(
+      squareSize: 16,
+      labelTextColor: Colors.black,
+      input: {
+        TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 3))): 5,
+        TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))): 35,
+        TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))): 14,
+        TimeUtils.removeTime(DateTime.now()): 5,
+      },
+      colorThresholds: {
+        1: Colors.green[100],
+        10: Colors.green[300],
+        30: Colors.green[500]
+      },
+      currentOpacity: 0,
+      monthLabels: TimeUtils.defaultMonthsLabels,
+      dayTextColor: Colors.red,
+      columnsToCreate: columnAmount,
+      date: date,
+    );
+  }
+
+  Widget getApp(DateTime date) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Row(
+          children: <Widget>[getSubjectUnderTest(date)],
+        ),
       ),
-    ),
-  );
+    );
+  }
 
-  group('Testing widgets children', () {
-    testWidgets('should have only one WeekColumns widget', (tester) async {
-      await tester.pumpWidget(app);
+  weekDays.forEach((day) {
+    group('Testing widgets children $day', () {
+      testWidgets('should have only one WeekColumns widget', (tester) async {
+        await tester.pumpWidget(getApp(DateTime(2020, 6, 14)));
 
-      expect(find.byType(WeekColumns), findsOneWidget);
-    });
+        expect(find.byType(WeekColumns), findsOneWidget);
+      });
 
-    testWidgets('should have only one Expanded widget', (tester) async {
-      await tester.pumpWidget(app);
 
-      expect(find.byType(Expanded), findsOneWidget);
-    });
+      testWidgets('should have only one Expanded widget', (tester) async {
+        await tester.pumpWidget(getApp(day));
 
-    testWidgets('should have only one Row', (tester) async {
-      await tester.pumpWidget(app);
+        expect(find.byType(Expanded), findsOneWidget);
+      });
 
-      expect(
-          find.descendant(
-              of: find.byType(WeekColumns), matching: find.byType(Row)),
-          findsOneWidget);
-    });
+      testWidgets('should have only one Row', (tester) async {
+        await tester.pumpWidget(getApp(day));
 
-    testWidgets('should have the given columns', (tester) async {
-      await tester.pumpWidget(app);
+        expect(
+            find.descendant(
+                of: find.byType(WeekColumns), matching: find.byType(Row)),
+            findsOneWidget);
+      });
 
-      expect(find.byType(Column), findsNWidgets(columnAmount));
-    });
+      testWidgets('should have the given columns', (tester) async {
+        await tester.pumpWidget(getApp(day));
 
-    testWidgets(
-        'should have the amount of MonthLabel widgets equal to the given amount of columns',
-        (tester) async {
-      await tester.pumpWidget(app);
+        expect(find.byType(Column), findsNWidgets(columnAmount));
+      });
 
-      expect(find.byType(MonthLabel), findsNWidgets(columnAmount));
-    });
+      testWidgets(
+          'should have the amount of MonthLabel widgets equal to the given amount of columns',
+          (tester) async {
+        await tester.pumpWidget(getApp(day));
 
-    testWidgets(
-        'should have the amount of HeatMapDay widgets equal to the given amount of columns, times the amount of days in a week',
-        (tester) async {
-      await tester.pumpWidget(app);
+        expect(find.byType(MonthLabel), findsNWidgets(columnAmount));
+      });
 
-      expect(find.byType(HeatMapDay),
-          findsNWidgets((7 * (columnAmount)) - daysUntilWeekEnds));
+      testWidgets(
+          'should have the amount of HeatMapDay widgets equal to the given amount of columns, times the amount of days in a week',
+          (tester) async {
+        await tester.pumpWidget(getApp(day));
+
+        int i = DateTime.daysPerWeek - day.weekday - 1;
+        if (day.weekday == 7) {
+            i = 6;
+        }
+
+        expect(find.byType(HeatMapDay),
+            findsNWidgets((7 * columnAmount) - (i)));
+      });
     });
   });
 
-  group('Unit testing', () {
-    group('getCalendarDates method', () {
-      test(
-          'should have the given amount of columns when result is divided by the amount of days in a week',
-          () {
-        List<DateTime> calendarDates = subject.getCalendarDates(columnAmount);
-        expect(calendarDates.length, greaterThan(0));
-
-        int daysAmount = calendarDates.length + daysUntilWeekEnds;
-        expect(columnAmount, equals((daysAmount ~/ 7)));
-      });
-    });
-
-    group('buildWeekItems method', () {
-      test('list should not be null', () {
-        expect(subject.buildWeekItems(), isNotNull);
+  weekDays.forEach((day) {
+    group('Unit testing $day', () {
+      group('getCalendarDates method', () {
+        test(
+            'should have the given amount of columns when result is divided by the amount of days in a week',
+            () {
+          List<DateTime> calendarDates =
+              getSubjectUnderTest(day).getCalendarDates(columnAmount);
+          expect(calendarDates.length, greaterThan(0));
+          int daysAmount = calendarDates.length;
+          expect(columnAmount, equals((daysAmount / 7).ceil()));
+        });
       });
 
-      test('list should not be empty', () {
-        expect(subject.buildWeekItems(), isNotEmpty);
-      });
+      group('buildWeekItems method', () {
+        test('list should not be null, $day', () {
+          expect(getSubjectUnderTest(day).buildWeekItems(), isNotNull);
+        });
 
-      test('list length should be equal to given columns amount', () {
-        expect(subject.buildWeekItems().length, equals(columnAmount));
+        test('list should not be null, $day', () {
+          expect(getSubjectUnderTest(day).buildWeekItems(), isNotNull);
+        });
+
+        test('list should not be empty, $day', () {
+          expect(getSubjectUnderTest(day).buildWeekItems(), isNotEmpty);
+        });
+
+        test('list length should be equal to given columns amount, $day', () {
+          expect(getSubjectUnderTest(day).buildWeekItems().length,
+              equals(columnAmount));
+        });
       });
     });
   });
