@@ -1,3 +1,7 @@
+## [1.2.7] - 2020-07-01
+
+* Removing generated files
+
 ## [1.2.6] - 2020-05-19
 
 * Support of unfinished week
