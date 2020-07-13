@@ -28,21 +28,13 @@ void main() {
     DateTime(2020, 6, 14),
   ];
 
-  WeekColumns getSubjectUnderTest(DateTime date) {
+  WeekColumns getSubjectUnderTest(DateTime date,
+      [Map<DateTime, int> input, Map<int, Color> colorThresholds]) {
     return WeekColumns(
       squareSize: 16,
       labelTextColor: Colors.black,
-      input: {
-        TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 3))): 5,
-        TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))): 35,
-        TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))): 14,
-        TimeUtils.removeTime(DateTime.now()): 5,
-      },
-      colorThresholds: {
-        1: Colors.green[100],
-        10: Colors.green[300],
-        30: Colors.green[500]
-      },
+      input: input ?? {},
+      colorThresholds: colorThresholds ?? {},
       currentOpacity: 0,
       monthLabels: TimeUtils.defaultMonthsLabels,
       dayTextColor: Colors.red,
@@ -68,7 +60,6 @@ void main() {
 
         expect(find.byType(WeekColumns), findsOneWidget);
       });
-
 
       testWidgets('should have only one Expanded widget', (tester) async {
         await tester.pumpWidget(getApp(day));
@@ -143,10 +134,67 @@ void main() {
         });
 
         test('list length should be equal to given columns amount, $day', () {
-          expect(getSubjectUnderTest(day).buildWeekItems().length,
-              equals(columnAmount));
+          expect(getSubjectUnderTest(day).buildWeekItems().length, equals(columnAmount));
         });
       });
+    });
+  });
+
+  Future _checkColoredDaysInWeek(
+      DateTime date, Map<DateTime, int> inputDates, WidgetTester tester) async {
+    Map<int, Color> colorThresholds = {30: Colors.green[500]};
+
+    WeekColumns subject = getSubjectUnderTest(date, inputDates, colorThresholds);
+
+    MaterialApp app = new MaterialApp(
+        home: Row(
+      children: <Widget>[
+        subject,
+      ],
+    ));
+    await tester.pumpWidget(app);
+
+    Finder finder = find.byType(HeatMapDay);
+
+    int daysColored = 0;
+    List<int> checkedDays = inputDates.keys.map((d) => d.day).toList();
+    for (Element element in finder.evaluate()) {
+      HeatMapDay heatMapDay = element.widget as HeatMapDay;
+      Color color = heatMapDay.getColorFromThreshold();
+      int currentDay = heatMapDay.currentDay;
+      if (color == colorThresholds[30]) {
+        if (!checkedDays.contains(currentDay)) {
+          fail("HeatMapDay with day $currentDay is colored, but it's not in input");
+        }
+        daysColored++;
+      }
+    }
+
+    expect(daysColored, inputDates.length);
+  }
+
+  group('Unit testing changed time', () {
+    testWidgets('Check DST', (WidgetTester tester) async {
+      DateTime date = DateTime(2020, 3, 31);
+      Map<DateTime, int> inputDates = {
+        DateTime(2020, 3, 27): 35,
+        DateTime(2020, 3, 28): 35,
+        DateTime(2020, 3, 29): 35,
+        DateTime(2020, 3, 30): 35,
+      };
+
+      await _checkColoredDaysInWeek(date, inputDates, tester);
+    });
+    testWidgets('Check winter time', (WidgetTester tester) async {
+      DateTime date = DateTime(2020, 10, 27);
+      Map<DateTime, int> inputDates = {
+        DateTime(2020, 10, 23): 35,
+        DateTime(2020, 10, 24): 35,
+        DateTime(2020, 10, 25): 35,
+        DateTime(2020, 10, 26): 35,
+      };
+
+      await _checkColoredDaysInWeek(date, inputDates, tester);
     });
   });
 }
