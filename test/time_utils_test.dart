@@ -64,11 +64,25 @@ void main() {
       expect(datesBetween, contains(initialDate));
     });
 
-    test('should fail assertion if initial date is after finisih date', () {
+    test('should fail assertion if initial date is after finish date', () {
       expect(
           () => TimeUtils.datesBetween(
               DateTime.now(), DateTime.now().subtract(Duration(days: 7))),
           throwsAssertionError);
+    });
+
+    test('No duplicated dates in DST change', () {
+      List<DateTime> datesBetween = TimeUtils.datesBetween(DateTime(2020, 10, 23), DateTime(2020, 10, 27));
+      Set<int> set = datesBetween.map((date) => date.day).toSet();
+      expect(set.length, datesBetween.length);
+    });
+
+    test('All dates set to midnight in DST change', () {
+      List<DateTime> datesBetween = TimeUtils.datesBetween(DateTime(2020, 10, 23), DateTime(2020, 10, 27));
+      datesBetween.forEach((date) => expect(date.hour, 0, reason: date.toIso8601String()));
+
+      List<DateTime> datesBetweenSummer = TimeUtils.datesBetween(DateTime(2020, 3, 27), DateTime(2020, 3, 31));
+      datesBetweenSummer.forEach((date) => expect(date.hour, 0, reason: date.toIso8601String()));
     });
   });
 }
