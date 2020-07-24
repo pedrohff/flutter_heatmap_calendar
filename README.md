@@ -12,7 +12,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
-  heatmap_calendar: ^1.2.7
+  heatmap_calendar: ^1.2.8
 ```
 
 ### 2. Install it

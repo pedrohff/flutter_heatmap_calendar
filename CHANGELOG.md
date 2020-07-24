@@ -1,3 +1,7 @@
+## [1.2.8] - 2020-07-23
+
+* Fixing date difference for timezones
+
 ## [1.2.7] - 2020-07-01
 
 * Removing generated files
