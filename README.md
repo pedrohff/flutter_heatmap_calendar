@@ -67,6 +67,7 @@ HeatMapCalendar(
   squareSize: 16.0,
   textOpacity: 0.3,
   labelTextColor: Colors.blueGrey,
+  labelTextSize: 14,
   dayTextColor: Colors.blue[500],
 )
 ```
