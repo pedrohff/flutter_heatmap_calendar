@@ -6,12 +6,14 @@ class DefaultContainer extends StatelessWidget {
     @required this.size,
     @required this.text,
     @required this.textColor,
+    @required this.textSize,
     this.margin: 2.0,
   }) : super(key: key);
 
   final double size;
   final String text;
   final Color textColor;
+  final double textSize;
   final double margin;
 
   @override
@@ -22,7 +24,7 @@ class DefaultContainer extends StatelessWidget {
         width: size,
         child: Text(
           text,
-          style: TextStyle(color: textColor),
+          style: TextStyle(fontSize: textSize, color: textColor),
         ),
         margin: EdgeInsets.all(margin));
   }

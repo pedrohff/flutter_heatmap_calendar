@@ -6,11 +6,13 @@ class MonthLabel extends StatelessWidget {
     @required this.size,
     this.text: "",
     @required this.textColor,
+    @required this.textSize,
   }) : super(key: key);
 
   final double size;
   final String text;
   final Color textColor;
+  final double textSize;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class MonthLabel extends StatelessWidget {
             bottom: 0,
             child: Text(
               text,
-              style: TextStyle(fontSize: 16, color: textColor),
+              style: TextStyle(fontSize: textSize, color: textColor),
             ),
           )
         ],

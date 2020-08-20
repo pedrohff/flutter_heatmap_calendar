@@ -8,6 +8,8 @@ class WeekColumns extends StatelessWidget {
 
   final Color labelTextColor;
 
+  final double labelTextSize;
+
   final Map<DateTime, int> input;
 
   final Map<int, Color> colorThresholds;
@@ -26,6 +28,7 @@ class WeekColumns extends StatelessWidget {
       {Key key,
       @required this.squareSize,
       @required this.labelTextColor,
+      @required this.labelTextSize,
       @required this.input,
       @required this.colorThresholds,
       @required this.currentOpacity,
@@ -65,6 +68,7 @@ class WeekColumns extends StatelessWidget {
         columnItems.add(MonthLabel(
           size: squareSize,
           textColor: labelTextColor,
+          textSize: labelTextSize,
           text: month,
         ));
       } else {
