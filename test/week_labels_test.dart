@@ -16,6 +16,7 @@ void main() {
           weekDaysLabels: weekDays,
           squareSize: size,
           labelTextColor: color,
+          labelTextSize: 14,
         ),
       );
     });
