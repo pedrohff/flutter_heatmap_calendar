@@ -11,7 +11,7 @@ class WeekLabels extends StatelessWidget {
       {Key key,
       @required this.weekDaysLabels,
       @required this.squareSize,
-      @required this.labelTextColor
+      @required this.labelTextColor,
       @required this.labelTextSize})
       : assert(weekDaysLabels != null),
         assert(weekDaysLabels.length == 7),
