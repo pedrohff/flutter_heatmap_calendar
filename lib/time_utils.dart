@@ -51,7 +51,7 @@ class TimeUtils {
   /// Returns date without timezone info (UTC format)
   static DateTime removeTZ(DateTime dateTime) {
     return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute,
-        dateTime.second, dateTime.millisecond, dateTime.millisecond);
+        dateTime.second, dateTime.millisecond, dateTime.microsecond);
   }
 
   /// Returns date with local timezone
