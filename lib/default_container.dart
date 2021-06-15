@@ -2,14 +2,16 @@ import 'package:flutter/cupertino.dart';
 
 class DefaultContainer extends StatelessWidget {
   const DefaultContainer({
-    Key key,
-    @required this.size,
-    @required this.text,
-    @required this.textColor,
-    this.margin: 2.0,
+    Key? key,
+    required this.size,
+    required this.text,
+    required this.textColor,
+    this.textSize = 14,
+    this.margin = 2.0,
   }) : super(key: key);
 
   final double size;
+  final double textSize;
   final String text;
   final Color textColor;
   final double margin;
@@ -22,8 +24,11 @@ class DefaultContainer extends StatelessWidget {
         width: size,
         child: Text(
           text,
-          style: TextStyle(color: textColor),
+          style: TextStyle(
+              fontSize: textSize,
+              color: textColor),
         ),
         margin: EdgeInsets.all(margin));
   }
 }
+

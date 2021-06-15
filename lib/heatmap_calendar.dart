@@ -25,7 +25,7 @@ class HeatMapCalendar extends StatefulWidget {
   /// Make sure to map starting on number 1, so the user might notice the difference between
   /// a day that had no input and one that had
   /// Example: {1: Colors.green[100], 20: Colors.green[200], 40: Colors.green[300]}
-  final Map<int, Color> colorThresholds;
+  final Map<int, Color?> colorThresholds;
 
   /// The size of each item of the calendar
   final double squareSize;
@@ -42,17 +42,21 @@ class HeatMapCalendar extends StatefulWidget {
   /// Helps avoiding overspacing issues
   final double safetyMargin;
 
+  /// The size of the texts in the weeks/months labels
+  final double labelTextSize;
+
   const HeatMapCalendar(
-      {Key key,
-      @required this.input,
-      @required this.colorThresholds,
-      this.weekDaysLabels: TimeUtils.defaultWeekLabels,
-      this.monthsLabels: TimeUtils.defaultMonthsLabels,
-      this.squareSize: 16,
-      this.textOpacity: 0.2,
-      this.labelTextColor: Colors.black,
-      this.dayTextColor: Colors.black,
-      this.safetyMargin: 0})
+      {Key? key,
+        required this.input,
+        required this.colorThresholds,
+        this.weekDaysLabels = TimeUtils.defaultWeekLabels,
+        this.monthsLabels = TimeUtils.defaultMonthsLabels,
+        this.squareSize = 16,
+        this.textOpacity = 0.2,
+        this.labelTextSize = 14,
+        this.labelTextColor = Colors.black,
+        this.dayTextColor = Colors.black,
+        this.safetyMargin = 0})
       : super(key: key);
 
   @override
@@ -97,12 +101,14 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
             child: Row(
               children: <Widget>[
                 WeekLabels(
+                  labelTextSize: widget.labelTextSize,
                   weekDaysLabels: widget.weekDaysLabels,
                   squareSize: widget.squareSize,
                   labelTextColor: widget.labelTextColor,
                 ),
                 WeekColumns(
                   squareSize: widget.squareSize,
+                  labelTextSize: widget.labelTextSize,
                   labelTextColor: widget.labelTextColor,
                   input: widget.input,
                   colorThresholds: widget.colorThresholds,

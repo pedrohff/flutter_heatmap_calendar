@@ -5,9 +5,9 @@ import 'package:heatmap_calendar/heatmap_day.dart';
 void main() {
   group('HeatMapDay Widget', () {
     Widget subject;
-    Widget app;
+    late Widget app;
     Color defaultColor = Colors.green;
-    Map<int, Color> thresholds = {
+    Map<int, Color?> thresholds = {
       1: Colors.red[100],
       30: Colors.red[300],
       60: Colors.red[700]
@@ -61,7 +61,7 @@ void main() {
 
   group('Testing method getColorFromThreshold', () {
     Color defaultColor = Colors.green;
-    Map<int, Color> thresholds = {
+    Map<int, Color?> thresholds = {
       1: Colors.red[100],
       30: Colors.red[300],
       60: Colors.red[700]
@@ -84,7 +84,7 @@ void main() {
         fontWeight: FontWeight.normal,
         defaultColor: defaultColor,
       );
-      Color color = subject.getColorFromThreshold();
+      Color? color = subject.getColorFromThreshold();
       expect(color, equals(defaultColor));
     });
 
@@ -97,7 +97,7 @@ void main() {
         fontWeight: FontWeight.normal,
         defaultColor: defaultColor,
       );
-      Color color = subject.getColorFromThreshold();
+      Color? color = subject.getColorFromThreshold();
       expect(color, equals(defaultColor));
     });
 
@@ -110,7 +110,7 @@ void main() {
         fontWeight: FontWeight.normal,
         defaultColor: defaultColor,
       );
-      Color color = subject.getColorFromThreshold();
+      Color? color = subject.getColorFromThreshold();
       expect(color, equals(Colors.red[100]));
     });
 
@@ -123,7 +123,7 @@ void main() {
         fontWeight: FontWeight.normal,
         defaultColor: defaultColor,
       );
-      Color color = subject.getColorFromThreshold();
+      Color? color = subject.getColorFromThreshold();
       expect(color, equals(Colors.red[700]));
     });
   });

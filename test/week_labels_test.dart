@@ -5,7 +5,7 @@ import 'package:heatmap_calendar/week_labels.dart';
 
 void main() {
   group('WeekLabels Widget', () {
-    Widget subject;
+    late Widget subject;
     var weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     var size = 5.0;
     var color = Colors.red;
