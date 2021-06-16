@@ -68,7 +68,7 @@ void main() {
     testWidgets('validating opacity and the displayDates flag', (tester) async {
       await tester.pumpWidget(app);
       StatefulElement element = tester.element(find.byKey(key));
-      HeatMapCalendarState state = element.state;
+      HeatMapCalendarState state = element.state as HeatMapCalendarState;
       bool displayDatesBefore = state.displayDates;
       double opacityBefore = state.currentOpacity;
 
@@ -87,7 +87,7 @@ void main() {
       testWidgets('should have 10 columns with given width', (tester) async {
         await tester.pumpWidget(app);
         StatefulElement element = tester.element(find.byKey(key));
-        HeatMapCalendarState state = element.state;
+        HeatMapCalendarState state = element.state as HeatMapCalendarState;
 
         expect(
             state.getColumnsToCreate(200 + subject.safetyMargin), equals(10));
@@ -97,7 +97,7 @@ void main() {
           (tester) async {
         await tester.pumpWidget(app);
         StatefulElement element = tester.element(find.byKey(key));
-        HeatMapCalendarState state = element.state;
+        HeatMapCalendarState state = element.state as HeatMapCalendarState;
         expect(() => state.getColumnsToCreate(19), throwsAssertionError);
       });
     });
@@ -107,7 +107,7 @@ void main() {
         await tester.pumpWidget(app);
 
         StatefulElement element = tester.element(find.byKey(key));
-        HeatMapCalendarState state = element.state;
+        HeatMapCalendarState state = element.state as HeatMapCalendarState;
 
         bool displayDatesBefore = state.displayDates;
         state.onDoubleTap();
@@ -118,7 +118,7 @@ void main() {
         await tester.pumpWidget(app);
 
         StatefulElement element = tester.element(find.byKey(key));
-        HeatMapCalendarState state = element.state;
+        HeatMapCalendarState state = element.state as HeatMapCalendarState;
         double opacityBefore = state.currentOpacity;
         state.onDoubleTap();
         expect(opacityBefore, isNot(state.currentOpacity));

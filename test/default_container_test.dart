@@ -4,7 +4,7 @@ import 'package:heatmap_calendar/default_container.dart';
 
 void main() {
   group('DefaultContainer Widget', () {
-    Widget subject;
+    late Widget subject;
     String text = "test";
 
     setUp(() {

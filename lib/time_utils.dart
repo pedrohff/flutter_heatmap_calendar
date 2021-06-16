@@ -78,7 +78,7 @@ class TimeUtils {
   static List<DateTime> datesBetween(DateTime startDate, DateTime finishDate) {
     assert(startDate.isBefore(finishDate));
 
-    List<DateTime> datesList = new List();
+    List<DateTime> datesList = [];
     DateTime aux = startDate;
     do {
       datesList.add(aux);
