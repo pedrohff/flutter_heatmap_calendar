@@ -22,6 +22,8 @@ class WeekColumns extends StatelessWidget {
 
   final DateTime date;
 
+  final void Function(DateTime) OnDateClicked;
+
   const WeekColumns(
       {Key key,
       @required this.squareSize,
@@ -32,7 +34,8 @@ class WeekColumns extends StatelessWidget {
       @required this.monthLabels,
       @required this.dayTextColor,
       @required this.columnsToCreate,
-      @required this.date})
+      @required this.date,
+      this.OnDateClicked})
       : super(key: key);
 
   /// The main logic for generating a list of columns representing a week
@@ -80,6 +83,7 @@ class WeekColumns extends StatelessWidget {
           currentDay: currentDate.day,
           opacity: currentOpacity,
           textColor: dayTextColor,
+          OnDateClicked: () => OnDateClicked(currentDate),
         );
         columnItems.add(heatMapDay);
 

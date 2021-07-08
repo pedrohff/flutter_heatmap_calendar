@@ -42,6 +42,9 @@ class HeatMapCalendar extends StatefulWidget {
   /// Helps avoiding overspacing issues
   final double safetyMargin;
 
+  // Callback for when a user clicks on date box
+  final void Function(DateTime) OnDateClicked;
+
   const HeatMapCalendar(
       {Key key,
       @required this.input,
@@ -52,7 +55,8 @@ class HeatMapCalendar extends StatefulWidget {
       this.textOpacity: 0.2,
       this.labelTextColor: Colors.black,
       this.dayTextColor: Colors.black,
-      this.safetyMargin: 0})
+      this.safetyMargin: 0,
+      this.OnDateClicked})
       : super(key: key);
 
   @override
@@ -111,6 +115,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
                   dayTextColor: widget.dayTextColor,
                   columnsToCreate: getColumnsToCreate(constraints.maxWidth) - 1,
                   date: DateTime.now(),
+                  OnDateClicked: (date) => widget.OnDateClicked(date),
                 )
               ],
             ),

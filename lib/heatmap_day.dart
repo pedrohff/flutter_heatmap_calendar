@@ -10,6 +10,7 @@ class HeatMapDay extends StatelessWidget {
   final Duration animationDuration;
   final Color textColor;
   final FontWeight fontWeight;
+  final VoidCallback OnDateClicked;
 
   const HeatMapDay(
       {Key key,
@@ -21,7 +22,8 @@ class HeatMapDay extends StatelessWidget {
       this.opacity: 0.3,
       this.animationDuration: const Duration(milliseconds: 300),
       this.textColor: Colors.black,
-      this.fontWeight})
+      this.fontWeight,
+      this.OnDateClicked})
       : super(key: key);
 
   /// Loop for getting the right color based on [thresholds] values
@@ -43,18 +45,21 @@ class HeatMapDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: size,
-      width: size,
-      color: getColorFromThreshold(),
-      margin: EdgeInsets.all(2.0),
-      child: AnimatedOpacity(
-        opacity: opacity,
-        duration: animationDuration,
-        child: Text(
-          currentDay.toString(),
-          style: TextStyle(fontWeight: fontWeight, color: textColor),
+    return InkWell(
+      onTap: () => OnDateClicked(),
+      child: Container(
+        alignment: Alignment.center,
+        height: size,
+        width: size,
+        color: getColorFromThreshold(),
+        margin: EdgeInsets.all(2.0),
+        child: AnimatedOpacity(
+          opacity: opacity,
+          duration: animationDuration,
+          child: Text(
+            currentDay.toString(),
+            style: TextStyle(fontWeight: fontWeight, color: textColor),
+          ),
         ),
       ),
     );
